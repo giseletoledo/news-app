@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 
 const NewsCard: React.FC<NewsCardProps> = ({ id, title, description, imageUrl, author, publishedAt }) => {
@@ -9,7 +10,11 @@ const NewsCard: React.FC<NewsCardProps> = ({ id, title, description, imageUrl, a
         {description && <p className="card-text">{description}</p>}
         {author && <p className="card-text"><small className="text-muted">By {author}</small></p>}
         {publishedAt && <p className="card-text"><small className="text-muted">{new Date(publishedAt).toLocaleDateString()}</small></p>}
-        <a href={`/news/${id}`} className="btn btn-primary">Leia mais</a>
+        <Link href={{
+          pathname: `/news/${title}`,
+        }} className="btn btn-primary">
+          Leia mais
+        </Link>
       </div>
     </div>
   );

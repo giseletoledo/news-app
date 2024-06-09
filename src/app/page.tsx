@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useEffect, useState } from 'react';
 import NewsCard from './components/NewsCard';
 import { Article } from './types/article';
@@ -12,10 +12,11 @@ const HomePage = () => {
     const fetchNews = async () => {
       const res = await fetch(`https://newsapi.org/v2/everything?q=bitcoin&apiKey=${process.env.NEXT_PUBLIC_NEWS_API_KEY}&pageSize=${itemsPerPage}&page=${currentPage}`);
       const data = await res.json();
-      const articlesWithId = data.articles.map((article:Article) => ({
+      const articlesWithId = data.articles.map((article: Article) => ({
         ...article,
-        id: generateId(), // Gere o ID separadamente
+        id: generateId(), 
       }));
+
       setArticles(articlesWithId);
     };
 
@@ -44,7 +45,7 @@ const HomePage = () => {
         {articles.map((article) => (
           <div key={article.id} className="col-md-4 mb-4">
             <NewsCard
-              id={article.id}
+              id={article.id ?? ''}
               title={article.title}
               description={article.description || ''}
               imageUrl={article.urlToImage || ''}
@@ -63,5 +64,3 @@ const HomePage = () => {
 };
 
 export default HomePage;
-
-
