@@ -10,11 +10,7 @@ const NewsCard: React.FC<NewsCardProps> = ({ id, title, description, imageUrl, a
         {description && <p className="card-text">{description}</p>}
         {author && <p className="card-text"><small className="text-muted">By {author}</small></p>}
         {publishedAt && <p className="card-text"><small className="text-muted">{new Date(publishedAt).toLocaleDateString()}</small></p>}
-        <Link href={{
-          pathname: `/news/${title}`,
-        }} className="btn btn-primary">
-          Leia mais
-        </Link>
+        <Link href={`/news/${encodeURIComponent(id)}`} className="btn btn-primary">Detalhes</Link>
       </div>
     </div>
   );

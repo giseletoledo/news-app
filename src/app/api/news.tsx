@@ -4,8 +4,8 @@ import { Article } from '../types/article';
 let articles: Article[] = [];
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { id } = req.query;
-  const article = articles.find(article => article.source.id === id);
+  const { title } = req.query;
+  const article = articles.find(article => article.title === title);
 
   if (!article) {
     res.status(404).json({ message: 'Article not found' });

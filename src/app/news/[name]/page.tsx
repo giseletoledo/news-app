@@ -1,12 +1,18 @@
+"use client"
 import { useEffect, useState } from 'react';
-import { Article } from '../types/article';
+import { useSearchParams } from 'next/navigation';
+import { Article } from '../../types/article';
 
-const NewsDetailPage = ({ params }: { params: { name: string } }) => {
+const NewsDetailPage = () => {
+  const searchParams = useSearchParams();
+  const title = searchParams.get('title');
   const [article, setArticle] = useState<Article | null>(null);
 
   useEffect(() => {
+    if (!title) return;
+
     const fetchArticle = async () => {
-      const res = await fetch(`/api/articles/${encodeURIComponent(params.name)}`);
+      const res = await fetch(`/api/${encodeURIComponent(title)}`);
       if (res.ok) {
         const data = await res.json();
         setArticle(data);
@@ -16,7 +22,7 @@ const NewsDetailPage = ({ params }: { params: { name: string } }) => {
     };
 
     fetchArticle();
-  }, [params.name]);
+  }, [title]);
 
   if (!article) {
     return <div>Carregando...</div>;
