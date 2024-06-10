@@ -1,0 +1,36 @@
+/*Loading spinner - carregando com css */
+.spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Centraliza verticalmente */
+  }
+  
+  .spinner .dot1,
+  .spinner .dot2,
+  .spinner .dot3 {
+    width: 15px;
+    height: 15px;
+    margin: 0 5px;
+    background-color: #333;
+    border-radius: 50%;
+    display: inline-block;
+    animation: dot-bounce 1.4s infinite ease-in-out both;
+  }
+  
+  .spinner .dot2 {
+    animation-delay: -0.32s;
+  }
+  
+  .spinner .dot3 {
+    animation-delay: -0.16s;
+  }
+  
+  @keyframes dot-bounce {
+    0%, 80%, 100% {
+      transform: scale(0);
+    }
+    40% {
+      transform: scale(1);
+    }
+  }
