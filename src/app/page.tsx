@@ -7,6 +7,7 @@ import { Article } from './types/article';
 const HomePage = () => {
   const [articles, setArticles] = useState<Article[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [error, setError] = useState<string | null>(null)
   const itemsPerPage = 10;
   const router = useRouter();
 
@@ -16,26 +17,40 @@ const HomePage = () => {
 
   useEffect(() => {
     const fetchNews = async () => {
-      const res = await fetch(`https://newsapi.org/v2/everything?q=apple&apiKey=${process.env.NEXT_PUBLIC_NEWS_API_KEY}&pageSize=${itemsPerPage}&page=${currentPage}`);
-      const data = await res.json();
-
-      if (data.articles && data.articles.lenght > 0) {
-        const articlesWithId = data.articles
-        .filter((article: any) => article.title !== "[Removed]")
-        .map((article: Article) => ({
-          ...article,
-          id: generateId(),
-        }));
-  
-        setArticles(articlesWithId);
+      try {
+        const res = await fetch(`https://newsapi.org/v2/everything?q=bitcoin&apiKey=${process.env.NEXT_PUBLIC_NEWS_API_KEY}&pageSize=${itemsPerPage}&page=${currentPage}`);
+        if (!res.ok) {
+          throw new Error('Falha ao carregar notícias');
+        }
+        const data = await res.json();
+        // Verifica se data.articles está definido e se possui algum elemento
+        if (data && data.articles && data.articles.length > 0) {
+          const articlesWithId = data.articles.map((article: Article) => ({
+            ...article,
+            id: generateId(),
+          }));
+          setArticles(articlesWithId);
+          setError(null);
+          // Limpa qualquer mensagem de erro existente
+        } else {
+          // Se não houver notícias, define articles como um array vazio
+          setArticles([]); 
+          setError('Não foram encontradas notícias.');
+          // Define uma mensagem de erro personalizada 
+        }
+      } catch (error) {
+        //console.error('Erro ao carregar notícias:', error.message);
+        // Limpa a lista de artigos em caso de erro
+        setArticles([]);
+        setError('Ocorreu um erro ao carregar as notícias. Por favor, tente novamente mais tarde.');
       }
-     
     };
+
 
     fetchNews();
   }, [currentPage]);
 
- 
+
 
   const handleArticleClick = (article: Article) => {
     const query = new URLSearchParams(article as any).toString();
