@@ -38,6 +38,7 @@ const HomePage = () => {
     setCurrentPage((prevPage) => prevPage - 1);
   };
 
+
   return (
     <div className="container">
       <h1 className="my-4">Últimas Notícias</h1>
@@ -46,7 +47,7 @@ const HomePage = () => {
           <div key={article.id} className="col-md-4 mb-4">
             <NewsCard
               id={article.id ?? ''}
-              title={article.title}
+              title={article.title ?? ''}
               description={article.description || ''}
               imageUrl={article.urlToImage || ''}
               author={article.author || ''}

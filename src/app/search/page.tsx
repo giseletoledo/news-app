@@ -35,7 +35,7 @@ const SearchPage = () => {
           <div key={index} className="col-md-4 mb-4">
             <NewsCard
               id={index.toString()}
-              title={article.title}
+              title={article.title  || ''}
               description={article.description || ''}
               imageUrl={article.urlToImage || ''}
               author={article.author || ''}
