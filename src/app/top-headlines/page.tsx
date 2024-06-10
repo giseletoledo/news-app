@@ -1,10 +1,13 @@
-"use client"
+
+"use client";
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import NewsCard from '../components/NewsCard';
 import { Article } from '../types/article';
 
 const TopHeadlinesPage = () => {
   const [articles, setArticles] = useState<Article[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -20,6 +23,11 @@ const TopHeadlinesPage = () => {
     fetchNews();
   }, []);
 
+  const handleArticleClick = (article: Article) => {
+    const query = new URLSearchParams(article as any).toString();
+    router.push(`/news/details?${query}`);
+  };
+
   return (
     <div className="container">
       <h1 className="my-4">Notícias Principais</h1>
@@ -27,12 +35,8 @@ const TopHeadlinesPage = () => {
         {articles.map((article, index) => (
           <div key={index} className="col-md-4 mb-4">
             <NewsCard
-              id={index.toString()}
-              title={article.title}
-              description={article.description || ''}
-              imageUrl={article.urlToImage || ''}
-              author={article.author || ''}
-              publishedAt={article.publishedAt}
+              article={article}
+              onClick={handleArticleClick}
             />
           </div>
         ))}

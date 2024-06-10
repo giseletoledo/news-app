@@ -3,16 +3,23 @@
 import { useState } from 'react';
 import NewsCard from '../components/NewsCard';
 import { Article } from '../types/article';
+import { useRouter } from 'next/navigation';
 
 const SearchPage = () => {
   const [query, setQuery] = useState('');
   const [articles, setArticles] = useState<Article[]>([]);
+  const router = useRouter();
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     const res = await fetch(`https://newsapi.org/v2/everything?q=${query}&apiKey=${process.env.NEXT_PUBLIC_NEWS_API_KEY}`);
     const data = await res.json();
     setArticles(data.articles.slice(0, 30));
+  };
+
+  const handleArticleClick = (article: Article) => {
+    const query = new URLSearchParams(article as any).toString();
+    router.push(`/news/details?${query}`);
   };
 
   return (
@@ -34,12 +41,8 @@ const SearchPage = () => {
         {articles.map((article, index) => (
           <div key={index} className="col-md-4 mb-4">
             <NewsCard
-              id={index.toString()}
-              title={article.title  || ''}
-              description={article.description || ''}
-              imageUrl={article.urlToImage || ''}
-              author={article.author || ''}
-              publishedAt={article.publishedAt}
+             article={article}
+             onClick={handleArticleClick}
             />
           </div>
         ))}

@@ -1,44 +1,28 @@
-import Link from 'next/link';
 import React from 'react';
 import { Article } from '../types/article';
 
-const NewsCard: React.FC<NewsCardProps> = ({
-  id,
-  title,
-  description,
-  imageUrl,
-  author,
-  publishedAt,
-}) => {
+interface NewsCardProps {
+  article: Article;
+  onClick: (article: Article) => void;
+}
 
-  const handleArticleClick = (article: Article) => {
-    localStorage.setItem('selectedArticle', JSON.stringify(article));
-  };
-
-
-  // Use `encodeURIComponent` to handle special characters in title
-  const encodedTitle = encodeURIComponent(id);
-
+const NewsCard: React.FC<NewsCardProps> = ({ article, onClick }) => {
   return (
     <div className="card h-100">
-      {imageUrl && (
+      {article.urlToImage && (
         <img
-          src={imageUrl}
+          src={article.urlToImage}
           className="card-img-top"
-          alt={title}
+          alt={article.title}
           style={{ maxHeight: '150px', objectFit: 'cover' }}
         />
       )}
       <div className="card-body">
-        <h5 className="card-title">
-          <Link href={`/news/${encodedTitle}`}>{title}</Link>
-        </h5>
-        {description && <p className="card-text">{description}</p>}
-        {author && <p className="card-text"><small className="text-muted">By {author}</small></p>}
-        {publishedAt && <p className="card-text"><small className="text-muted">{new Date(publishedAt).toLocaleDateString()}</small></p>}
-        <Link href={`/news/${encodedTitle}`}>
-          <button className="btn btn-primary">Detalhes</button>
-        </Link>
+        <h5 className="card-title">{article.title}</h5>
+        {article.description && <p className="card-text">{article.description}</p>}
+        {article.author && <p className="card-text"><small className="text-muted">By {article.author}</small></p>}
+        {article.publishedAt && <p className="card-text"><small className="text-muted">{new Date(article.publishedAt).toLocaleDateString()}</small></p>}
+       <button onClick={() => onClick(article)} className="btn btn-primary">Detalhes</button>
       </div>
     </div>
   );

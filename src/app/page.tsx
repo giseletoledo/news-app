@@ -1,12 +1,14 @@
 "use client";
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import NewsCard from './components/NewsCard';
 import { Article } from './types/article';
 
 const HomePage = () => {
   const [articles, setArticles] = useState<Article[]>([]);
-  const [currentPage, setCurrentPage] = useState(1); // Página atual
-  const itemsPerPage = 10; // Número de itens por página
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  const router = useRouter();
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -14,30 +16,23 @@ const HomePage = () => {
       const data = await res.json();
       const articlesWithId = data.articles.map((article: Article) => ({
         ...article,
-        id: generateId(), 
+        id: generateId(),
       }));
 
       setArticles(articlesWithId);
     };
 
     fetchNews();
-  }, [currentPage]); // Atualize os artigos sempre que a página atual mudar
+  }, [currentPage]);
 
-  // Função para gerar um ID único
   const generateId = () => {
-    return Math.random().toString(36).substr(2, 9); // Gera uma sequência aleatória de 9 caracteres alfanuméricos
+    return Math.random().toString(36).substr(2, 9);
   };
 
-  // Função para ir para a próxima página
-  const nextPage = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
+  const handleArticleClick = (article: Article) => {
+    const query = new URLSearchParams(article as any).toString();
+    router.push(`/news/details?${query}`);
   };
-
-  // Função para ir para a página anterior
-  const prevPage = () => {
-    setCurrentPage((prevPage) => prevPage - 1);
-  };
-
 
   return (
     <div className="container">
@@ -46,19 +41,15 @@ const HomePage = () => {
         {articles.map((article) => (
           <div key={article.id} className="col-md-4 mb-4">
             <NewsCard
-              id={article.id ?? ''}
-              title={article.title ?? ''}
-              description={article.description || ''}
-              imageUrl={article.urlToImage || ''}
-              author={article.author || ''}
-              publishedAt={article.publishedAt}
+              article={article}
+              onClick={handleArticleClick}
             />
           </div>
         ))}
       </div>
       <div>
-        <button onClick={prevPage} disabled={currentPage === 1}>Anterior</button>
-        <button onClick={nextPage}>Próxima</button>
+        <button onClick={() => setCurrentPage((prevPage) => prevPage - 1)} disabled={currentPage === 1}>Anterior</button>
+        <button onClick={() => setCurrentPage((prevPage) => prevPage + 1)}>Próxima</button>
       </div>
     </div>
   );
