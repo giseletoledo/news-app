@@ -24,13 +24,24 @@ const TopHeadlinesPage = () => {
   }, []);
 
   const handleArticleClick = (article: Article) => {
-    const query = new URLSearchParams(article as any).toString();
+    // Filtrar as propriedades do artigo para remover aquelas que são nulas ou vazias
+    const filteredArticle = Object.fromEntries(
+      Object.entries(article).filter(([_, value]) => value !== null && value !== '')
+    );
+  
+    // Montar a querystring com os dados do artigo filtrados
+    const query = new URLSearchParams(filteredArticle as any).toString();
+  
+    // Navegar para a página de detalhes com a querystring
     router.push(`/news/details?${query}`);
   };
-
+  
   return (
     <div className="container">
-      <h1 className="my-4">Notícias Principais</h1>
+      <h1 className="news-title my-4">
+        Notícias Principais
+        <i className="bi bi-newspaper ms-1"></i>
+        </h1>
       <div className="row">
         {articles.map((article, index) => (
           <div key={index} className="col-md-4 mb-4">

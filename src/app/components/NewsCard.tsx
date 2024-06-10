@@ -7,22 +7,25 @@ interface NewsCardProps {
 }
 
 const NewsCard: React.FC<NewsCardProps> = ({ article, onClick }) => {
+
+  const authorText = article.author || 'Autor não disponível';
+
   return (
     <div className="card h-100">
       {article.urlToImage && (
         <img
           src={article.urlToImage}
           className="card-img-top"
-          alt={article.title}
+          alt={article.title || 'Título não disponível'}
           style={{ maxHeight: '150px', objectFit: 'cover' }}
         />
       )}
       <div className="card-body">
-        <h5 className="card-title">{article.title}</h5>
+        <h5 className="card-title">{article.title || 'Título não disponível'}</h5>
         {article.description && <p className="card-text">{article.description}</p>}
-        {article.author && <p className="card-text"><small className="text-muted">By {article.author}</small></p>}
+        <p className='card-text'>Autor: {authorText}</p>
         {article.publishedAt && <p className="card-text"><small className="text-muted">{new Date(article.publishedAt).toLocaleDateString()}</small></p>}
-       <button onClick={() => onClick(article)} className="btn btn-primary">Detalhes</button>
+       <button onClick={() => onClick(article)} className="btn btn-danger">Detalhes</button>
       </div>
     </div>
   );

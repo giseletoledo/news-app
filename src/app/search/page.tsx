@@ -24,7 +24,9 @@ const SearchPage = () => {
 
   return (
     <div className="container">
-      <h1 className="my-4">Buscar Notícias</h1>
+      <h1 className="my-4 news-title">Buscar Notícias 
+      <i className="bi bi-search ms-1"></i>
+      </h1>
       <form onSubmit={handleSearch}>
         <div className="mb-3">
           <input
@@ -35,7 +37,7 @@ const SearchPage = () => {
             placeholder="Digite sua busca"
           />
         </div>
-        <button type="submit" className="btn btn-primary">Buscar</button>
+        <button type="submit" className="btn btn-danger">Buscar</button>
       </form>
       <div className="row mt-4">
         {articles.map((article, index) => (

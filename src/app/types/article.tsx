@@ -4,7 +4,7 @@ export interface Article {
       id?: string | null;
       name?: string;
     };
-    author?: string | null;
+    author?: string | 'null';
     title?: string;
     description?: string | null;
     url?: string;
