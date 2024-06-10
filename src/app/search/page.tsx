@@ -39,6 +39,7 @@ const SearchPage = () => {
         </div>
         <button type="submit" className="btn btn-danger">Buscar</button>
       </form>
+      {articles.length === 0 && <p>Sem notícias disponíveis</p>}
       <div className="row mt-4">
         {articles.map((article, index) => (
           <div key={index} className="col-md-4 mb-4">

@@ -42,6 +42,7 @@ const TopHeadlinesPage = () => {
         Notícias Principais
         <i className="bi bi-newspaper ms-1"></i>
         </h1>
+        {articles.length === 0 && <p>Sem notícias disponíveis</p>}
       <div className="row">
         {articles.map((article, index) => (
           <div key={index} className="col-md-4 mb-4">

@@ -45,6 +45,7 @@ const HomePage = () => {
   return (
     <div className="container">
       <h1 className="news-title my-4">Últimas Notícias</h1>
+      {articles.length === 0 && <p>Sem notícias disponíveis</p>}
       <div className="row">
         {articles.map((article) => (
           <div key={article.id} className="col-md-4 mb-4">
