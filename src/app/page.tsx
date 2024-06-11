@@ -3,11 +3,13 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import NewsCard from './components/NewsCard';
 import { Article } from './types/article';
+import LoadingSpinner from './components/LoadingSpinner';
 
 const HomePage = () => {
   const [articles, setArticles] = useState<Article[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const itemsPerPage = 10;
   const router = useRouter();
 
@@ -17,7 +19,12 @@ const HomePage = () => {
 
   useEffect(() => {
     const fetchNews = async () => {
+      setIsLoading(true);
+      setError(null);
       try {
+        //Adiciona um atraso artificial de 2 segundos para testes
+        await new Promise(resolve => setTimeout(resolve,2000))
+
         const res = await fetch(`https://newsapi.org/v2/everything?q=bitcoin&apiKey=${process.env.NEXT_PUBLIC_NEWS_API_KEY}&pageSize=${itemsPerPage}&page=${currentPage}`);
         if (!res.ok) {
           throw new Error('Falha ao carregar notícias');
@@ -35,14 +42,16 @@ const HomePage = () => {
         } else {
           // Se não houver notícias, define articles como um array vazio
           setArticles([]); 
+          //setIsLoading(false);
           setError('Não foram encontradas notícias.');
-          // Define uma mensagem de erro personalizada 
         }
       } catch (error) {
-        //console.error('Erro ao carregar notícias:', error.message);
+        console.error('Erro ao carregar notícias:', error instanceof Error ? error.message : 'Erro desconhecido');
         // Limpa a lista de artigos em caso de erro
         setArticles([]);
         setError('Ocorreu um erro ao carregar as notícias. Por favor, tente novamente mais tarde.');
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -50,12 +59,18 @@ const HomePage = () => {
     fetchNews();
   }, [currentPage]);
 
-
-
   const handleArticleClick = (article: Article) => {
     const query = new URLSearchParams(article as any).toString();
     router.push(`/news/details?${query}`);
   };
+
+  if (isLoading) {
+    return <LoadingSpinner/>;
+  }
+
+  if (error) {
+    return <div className='error-message'>{error}</div>
+  }
 
   return (
     <div className="container">
