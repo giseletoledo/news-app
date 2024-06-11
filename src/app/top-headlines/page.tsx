@@ -1,4 +1,3 @@
-
 "use client";
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -13,7 +12,11 @@ const TopHeadlinesPage = () => {
     const fetchNews = async () => {
       try {
         const res = await fetch('/api/top-headlines'); 
+        if (!res.ok) {
+          throw new Error('Falha ao carregar notícias');
+        }
         const data = await res.json();
+        console.log(data)
         setArticles(data);
       } catch (error) {
         console.error('Failed to fetch top headlines:', error);

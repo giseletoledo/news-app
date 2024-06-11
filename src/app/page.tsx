@@ -55,7 +55,6 @@ const HomePage = () => {
       }
     };
 
-
     fetchNews();
   }, [currentPage]);
 
