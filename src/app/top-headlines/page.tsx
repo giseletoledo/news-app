@@ -16,7 +16,7 @@ const TopHeadlinesPage = () => {
           throw new Error('Falha ao carregar notícias');
         }
         const data = await res.json();
-        console.log(data)
+        //console.log(data)
         setArticles(data);
       } catch (error) {
         console.error('Failed to fetch top headlines:', error);

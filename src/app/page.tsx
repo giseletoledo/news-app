@@ -4,7 +4,8 @@ import { useRouter } from 'next/navigation';
 import NewsCard from './components/NewsCard';
 import { Article } from './types/article';
 import LoadingSpinner from './components/LoadingSpinner';
-
+import 'bootstrap/dist/js/bootstrap.js'
+ 
 const HomePage = () => {
   const [articles, setArticles] = useState<Article[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -18,6 +19,7 @@ const HomePage = () => {
   };
 
   useEffect(() => {
+
     const fetchNews = async () => {
       setIsLoading(true);
       setError(null);
